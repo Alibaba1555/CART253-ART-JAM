@@ -1,68 +1,75 @@
 /**
- * Cycle
+ * BLACK HOLE
  * Tianshun Wu
  * 
- * HOW EMBARRASSING! I HAVE NO DESCRIPTION OF MY PROJECT!
- * PLEASE REMOVE A GRADE FROM MY WORK IF IT'S GRADED!
+ * This is a simple black hole simulation game where users can move the mouse to control the black hole to swallow up the planets that appear randomly every second.
+ * 
+ * Control: 
+ * move your mouse 
+ * 
+ * Uses:
+ * p5.js
+ * https://p5js.org
+ * https://p5js.org/reference/p5/noCursor/
+ * https://p5js.org/examples//calculating-values-random/
  */
 
 "use strict";
 
-let font;
 
 
-// Array to store circles
+
+// Store circles
 let circles = [];
 /**
  * Create a background !!
 */
 function setup() {
-    createCanvas(800, 800);
-    noCursor();
-    frameRate(60); // set frame rate to 60FPS
+    createCanvas(800, 800); 
+    noCursor(); // Remove the cursor form ellipse
+    frameRate(60); // Set frame rate to 60FPS
 
 }
-{
-    // Hide the cursor.
-    noCursor();
-  }
-    
 
 /**
- * OOPS I DIDN'T DESCRIBE WHAT MY DRAW DOES!
+ * First, draw the ellipse to replace my mouse
+ * Create circle that pops up every 60 frames/ 1 second with random x,y and random color
+ * Remove circles by adding the distance to shrink 
+ * Shrinking and xy movement animation (circles)
+ * Remove the circles 
 */
 function draw() {
-    //background color: black
-    background(0, 0, 0);
-    //remove the black line form ellipse
+    //Background color: black + a little blue
+    background(0, 0, 50);
+    //Remove the black line form ellipse
     noStroke();
 
-    //cursor became the ellipse,230 =size
-    fill(255, 255, 255)
-    ellipse(mouseX, mouseY, 230);
+    //Cursor became the ellipse,210 =size
+    fill(255, 255, 255) // color of the ellipse
+    ellipse(mouseX, mouseY, 210);
 
-    // every 1.5 seconds create a new circle
+    // Every 1 seconds (60frames) create a new circle
     if (frameCount % 60 === 0) { // 60 frames
-        let newCircle = {
+        let Circle = {
             x: random(width),
             y: random(height),
             size: 120,
-            //random color for the circle
-            color: color(random(255), random(255), random(255)),
-            // shrinking: false
+            //Random color for the circle
+            color: color(random(100, 256), random(100, 256), random(100, 256)),
+           
         };
-        circles.push(newCircle);
+        circles.push(Circle);
     }
     
-
+    // Remove the circles
     for (let i = circles.length - 1; i >= 0; i--) {
         // Check if the circle is within the "black hole"
-        if (dist(mouseX, mouseY, circles[i].x, circles[i].y) < 180) { 
+        if (dist(mouseX, mouseY, circles[i].x, circles[i].y) < 190) { //190 distance form the center of the "black hole"
             circles[i].shrinking = true; // Mark the circle to shrink
         } else {
-            circles[i].shrinking = false; // Mark the circle to shrink
+            circles[i].shrinking = false; // Mark the circle to not shrink if it was not close enough(otherwise we can not see the circles, I don't know why)
         }
-            
+            // If the circles shrink, they move to the center of the "black hole"
         if (circles[i].shrinking) {
             circles[i].x = circles[i].x + (mouseX - circles[i].x) * 0.11; // movement towards the mouse X
             circles[i].y = circles[i].y + (mouseY - circles[i].y) * 0.11; // movement towards the mouse Y
